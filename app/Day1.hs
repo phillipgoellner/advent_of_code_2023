@@ -1,7 +1,6 @@
-module Day1 where
+module Day1(part1, part2) where
 
 import Data.Char (isDigit)
-import Main (printPuzzleAnswer)
 import Data.Text (replace, pack, unpack)
     
 examplePuzzleLines = ["1abc2",
@@ -9,8 +8,8 @@ examplePuzzleLines = ["1abc2",
          "a1b2c3d4e5f",
          "treb7uchet"]
 
-part1 = printPuzzleAnswer calibrationValue
-part2 = printPuzzleAnswer part2Calbration
+part1 = calibrationValue
+part2 = part2Calbration
 
 
 calibrationValue :: [String] -> Int

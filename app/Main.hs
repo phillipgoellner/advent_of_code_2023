@@ -5,6 +5,7 @@ import System.IO (openFile, IOMode(ReadMode), hClose, hIsEOF, hGetContents, Hand
 import Day1
 import Day2
 import Day3
+import Day4
 
 main :: IO ()
 main = do
@@ -17,6 +18,9 @@ main = do
     print "-----------PART 3-----------"
     printPuzzleAnswer "app/inputDay3.txt"  Day3.part1
     printPuzzleAnswer "app/inputDay3.txt"  Day3.part2
+    print "-----------PART 4-----------"
+    printPuzzleAnswer "app/inputDay4.txt"  Day4.part1
+    printPuzzleAnswer "app/inputDay4.txt"  Day4.part2
 
 
 printPuzzleAnswer :: String -> ([String] -> Int) -> IO ()

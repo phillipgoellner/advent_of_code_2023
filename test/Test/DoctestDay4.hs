@@ -26,3 +26,8 @@ day4Spec = describe "Day 4" $ do
     describe "Part 2" $ do
         it "acceptance" $ 
             part2 givenLines `shouldBe` 30
+
+        it "second card is copied once" $ 
+            part2 [
+                "Card 4: 41 92 73 84 69 | 59 84 76 51 58  5 54 83",
+                "Card 5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36"] `shouldBe` 3

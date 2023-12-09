@@ -1,8 +1,9 @@
+{-# LANGUAGE TupleSections #-}
 module Day4(part1, part2) where
 
 
 part1 = totalWorthOfCards
-part2 = error "Part 2 not implemented"
+part2 = numberOfCardCopies
 
 example = ["Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53",
            "Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19",
@@ -50,3 +51,18 @@ winningScore winningNums = pow2 winningNums 1 where
     pow2 0 _ = 0
     pow2 1 result = result
     pow2 num result = pow2 (num - 1) (result * 2)
+
+
+-- Part 2
+
+numberOfCardCopies :: [String] -> Int
+numberOfCardCopies lines = lineWise 0 (winningNumbersPerLineWithCopies lines) where
+    lineWise totalCopies []                                    = totalCopies
+    lineWise totalCopies ((wins, copiesInLine) : restOfLines)  = lineWise (totalCopies + copiesInLine) (updateLines restOfLines copiesInLine wins) where
+        updateLines lines _ 0 = lines
+        updateLines [] _ _ = []
+        updateLines ((ws, copiesToUpdate) : rest) toUpdate wins = (ws, copiesToUpdate + toUpdate) : updateLines rest copiesInLine (wins - 1)
+
+
+winningNumbersPerLineWithCopies :: [String] -> [(Int, Int)]
+winningNumbersPerLineWithCopies = map ((, 1) . numberOfWinningNumbers . toCard)

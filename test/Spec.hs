@@ -5,6 +5,7 @@ import Test.Hspec (describe, hspec)
 
 import Test.DoctestDay3 (day3Spec)
 import Test.DoctestDay4 (day4Spec)
+import Test.DoctestDay5 (day5Spec)
 
 
 main :: IO ()
@@ -16,3 +17,4 @@ main = do
     hspec $ describe "Tests" $ do
         day3Spec
         day4Spec
+        day5Spec

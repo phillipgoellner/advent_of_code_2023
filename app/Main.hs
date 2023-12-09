@@ -6,6 +6,7 @@ import Day1
 import Day2
 import Day3
 import Day4
+import Day5
 
 main :: IO ()
 main = do
@@ -21,6 +22,9 @@ main = do
     print "-----------PART 4-----------"
     printPuzzleAnswer "app/inputDay4.txt"  Day4.part1
     printPuzzleAnswer "app/inputDay4.txt"  Day4.part2
+    print "-----------PART 5-----------"
+    printPuzzleAnswer "app/inputDay5.txt"  Day5.part1
+    printPuzzleAnswer "app/inputDay5.txt"  Day5.part2
 
 
 printPuzzleAnswer :: String -> ([String] -> Int) -> IO ()

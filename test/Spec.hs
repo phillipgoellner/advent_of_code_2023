@@ -6,6 +6,7 @@ import Test.Hspec (describe, hspec)
 import Test.DoctestDay3 (day3Spec)
 import Test.DoctestDay4 (day4Spec)
 import Test.DoctestDay5 (day5Spec)
+import Test.DoctestDay6 (day6Spec)
 
 
 main :: IO ()
@@ -18,3 +19,4 @@ main = do
         day3Spec
         day4Spec
         day5Spec
+        day6Spec

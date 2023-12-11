@@ -32,6 +32,7 @@ library advent-days
                     , Day3
                     , Day4
                     , Day5
+                    , Day6
   build-depends:      base ^>=4.17.2.0
                     , text ^>=2.0.2
   hs-source-dirs:     days
@@ -56,6 +57,7 @@ test-suite aoc-tests
   other-modules:      Test.DoctestDay3
                     , Test.DoctestDay4
                     , Test.DoctestDay5
+                    , Test.DoctestDay6
   build-depends:      advent-days
                     , hspec >= 2.9 && < 2.11
                     , base ^>=4.17.2.0

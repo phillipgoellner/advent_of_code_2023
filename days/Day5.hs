@@ -1,8 +1,8 @@
-module Day5(part1, part2) where
+module Day5(part1, part2, translateOne) where
 
 part1 :: [String] -> Int
 part1 lines = minimum (locations lines)
-part2 = error "Part 2 not implement yet"
+part2 lines = minimum (locationsFromRanges lines)
 
 example = ["seeds: 79 14 55 13",
            "",
@@ -39,6 +39,7 @@ example = ["seeds: 79 14 55 13",
            "56 93 4"]
 
 type Mapping = (Int, Int, Int)
+type Range = (Int, Int)
 
 -- maps:
 -- destination source range-length
@@ -94,3 +95,42 @@ sourceToDestination ((s, d, l) : mps) src
     | src - s < 0 = sourceToDestination mps src
     | src - s < l = d + (src - s)
     | otherwise = sourceToDestination mps src
+
+
+-- Part 2
+
+-- seed 82 -> soil 84 -> fertilizer 84 -> water 84 -> light 77 -> temperature 45 -> humidity 46 -> location 46
+
+locationsFromRanges :: [String] -> [Int]
+locationsFromRanges lines = map fst (foldl translate (seedRanges lines) [soilMappings lines, fertilizerMappings lines, waterMappings lines, lightMappings lines, temperatureMappings lines, humidityMappings lines, locationMappings lines])
+
+
+seedRanges :: [String] -> [Range]
+seedRanges (seedLine : _) = parseSeedLine seedLine where
+    parseSeedLine (':' : numbers) = processPairs (map read (words numbers)) [] where
+        processPairs [] foundSeeds = foundSeeds
+        processPairs (left : right : rest) foundSeeds = processPairs rest ((left, right) : foundSeeds)
+    parseSeedLine (_ : rest) = parseSeedLine rest
+
+
+translate :: [Range] -> [Mapping] -> [Range]
+translate ranges mappings = concatMap (translateOne mappings) ranges
+
+translateOne :: [Mapping] -> Range -> [Range]
+translateOne [] source = [source]
+translateOne ((src, dest, length) : mps) (rngStart, rngLength)
+    | (rngStart, rngLength) `outsideOf` (src, dest, length) = translateOne mps (rngStart, rngLength)
+    | (rngStart, rngLength) `fullyInsideOf` (src, dest, length) = [(rngStart + (dest - src), rngLength)]
+    | (rngStart, rngLength) `wrapsAround` (src, dest, length) = translateOne mps (rngStart, src - rngStart) ++ [(dest, length)] ++ translateOne mps (src + length, (rngStart + rngLength) - (src + length))
+    | rngStart < src = (dest, rngLength - (src - rngStart)) : translateOne mps (rngStart, src - rngStart)
+    | otherwise = translateOne ((src, dest, length) : mps) (src + length, rngLength - ((src + length) - rngStart)) ++ translateOne ((src, dest, length) : mps) (rngStart, (src + length) - rngStart)
+
+
+outsideOf :: Range -> Mapping -> Bool
+outsideOf (rngStart, rngLength) (src, _, length) = (rngStart >= src + length) || (rngStart + rngLength <= src)
+
+fullyInsideOf :: Range -> Mapping -> Bool
+fullyInsideOf (rngStart, rngLength) (src, _, length) = (rngStart >= src) && (rngStart + rngLength <= src + length)
+
+wrapsAround :: Range -> Mapping -> Bool
+wrapsAround (rngStart, rngLength) (src, _, length) = (rngStart < src) && (rngStart + rngLength > src + length)

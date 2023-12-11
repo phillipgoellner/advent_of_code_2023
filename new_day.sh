@@ -16,8 +16,8 @@ import Day$1 (part1, part2)
 givenLines = []
 
 
-day4Spec :: Spec
-day4Spec = describe \"Day $1\" $ do
+day${1}Spec :: Spec
+day${1}Spec = describe \"Day $1\" $ do
     describe \"Part 1\" $ do
         it \"acceptance\" $ 
             part1 givenLines \`shouldBe\` 0

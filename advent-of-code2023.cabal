@@ -33,8 +33,10 @@ library advent-days
                     , Day4
                     , Day5
                     , Day6
+                    , Day7
   build-depends:      base ^>=4.17.2.0
                     , text ^>=2.0.2
+                    , leancheck ^>=1.0.0
   hs-source-dirs:     days
   default-language:   Haskell2010
 
@@ -58,6 +60,7 @@ test-suite aoc-tests
                     , Test.DoctestDay4
                     , Test.DoctestDay5
                     , Test.DoctestDay6
+                    , Test.DoctestDay7
   build-depends:      advent-days
                     , hspec >= 2.9 && < 2.11
                     , base ^>=4.17.2.0

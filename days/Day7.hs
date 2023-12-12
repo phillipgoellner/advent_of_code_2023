@@ -12,7 +12,7 @@ example = ["32T3K 765",
            "QQQJA 483"]
 
 part1 = determineTotalWinnings
-part2 = error "Part 2 not implemented yet"
+part2 = determineTotalWinningsWithJokers
 
 data HandKind = FiveOfAKind |
                 FourOfAKind |
@@ -81,3 +81,56 @@ compareHandKinds OnePair OnePair = EQ
 compareHandKinds OnePair _ = LT
 compareHandKinds _ OnePair = GT
 compareHandKinds _ _ = EQ
+
+
+-- Part 2
+
+determineTotalWinningsWithJokers :: [String] -> Int
+determineTotalWinningsWithJokers lines = scoreRankedHands (rankHandsWithJokers (map (toTuples . words) lines)) where
+    toTuples (hand : bid : _) = (map cardValueToInt hand, read bid :: Int) where
+        cardValueToInt 'A' = 14
+        cardValueToInt 'K' = 13
+        cardValueToInt 'Q' = 12
+        cardValueToInt 'J' = 1
+        cardValueToInt 'T' = 10
+        cardValueToInt a = digitToInt a
+
+rankHandsWithJokers :: [([Int], Int)] -> [([Int], Int)]
+rankHandsWithJokers = sortBy sortHandsWithJokers
+
+sortHandsWithJokers :: ([Int], Int) -> ([Int], Int) -> Ordering
+sortHandsWithJokers (hand1, _) (hand2, _)
+    | handKindWithJokers hand1 /= handKindWithJokers hand2 = compareHandKinds (handKindWithJokers hand1) (handKindWithJokers hand2)
+    | otherwise = sortByCards hand1 hand2 where
+        sortByCards (card1 : cards1) (card2 : cards2)
+            | card1 == card2 = sortByCards cards1 cards2
+            | otherwise = compare card2 card1
+
+handKindWithJokers :: [Int] -> HandKind
+handKindWithJokers hand = classify (sortBy (flip compare `on` snd) (counts hand)) where
+    classify ((_, 5) : _)                                       = FiveOfAKind
+    classify ((1, 4) : (_, 1) : _)                              = FiveOfAKind
+    classify ((_, 4) : (1, 1) : _)                              = FiveOfAKind
+    classify ((1, 3) : (_, 2) : _)                              = FiveOfAKind
+    classify ((_, 3) : (1, 2) : _)                              = FiveOfAKind
+    classify ((_, 4) : _)                                       = FourOfAKind
+    classify ((1, 3) : (_, 1) : _)                              = FourOfAKind
+    classify ((_, 3) : (1, 1): _)                               = FourOfAKind
+    classify ((_, 3) : (_, 1) : (1, 1) : _)                     = FourOfAKind
+    classify ((1, 2) : (_, 2) : _)                              = FourOfAKind
+    classify ((_, 2) : (1, 2) : _)                              = FourOfAKind
+    classify ((_, 3) : (_, 2) : _)                              = FullHouse
+    classify ((_, 2) : (_, 2) : (1, 1) : _)                     = FullHouse
+    classify ((_, 3) : _)                                       = ThreeOfAKind
+    classify ((1, 2) : _)                                       = ThreeOfAKind
+    classify ((_, 2) : (1, 1) : (_, 1) : (_, 1) : _)            = ThreeOfAKind
+    classify ((_, 2) : (_, 1) : (1, 1) : (_, 1) : _)            = ThreeOfAKind
+    classify ((_, 2) : (_, 1) : (_, 1) : (1, 1) : _)            = ThreeOfAKind
+    classify ((_, 2) : (_, 2) : _)                              = TwoPairs
+    classify ((_, 2) : _)                                       = OnePair
+    classify ((1, 1) : (_, 1) : (_, 1) : (_, 1) : (_, 1) : _)   = OnePair
+    classify ((_, 1) : (1, 1) : (_, 1) : (_, 1) : (_, 1) : _)   = OnePair
+    classify ((_, 1) : (_, 1) : (1, 1) : (_, 1) : (_, 1) : _)   = OnePair
+    classify ((_, 1) : (_, 1) : (_, 1) : (1, 1) : (_, 1) : _)   = OnePair
+    classify ((_, 1) : (_, 1) : (_, 1) : (_, 1) : (1, 1) : _)   = OnePair
+    classify _                                                  = HighCard

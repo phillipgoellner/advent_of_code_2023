@@ -10,12 +10,6 @@ givenLines = ["32T3K 765",
               "KTJJT 220",
               "QQQJA 483"]
 
-          --  "QQQJA 483"
-          --  "T55J5 684",
-          --  "KK677 28",
-          --  "KTJJT 220",
-          --  "32T3K 765",
-
 
 day7Spec :: Spec
 day7Spec = describe "Day 7" $ do
@@ -32,3 +26,13 @@ day7Spec = describe "Day 7" $ do
 
         it "different kinds of hands are ordered by kind" $ 
             part1 ["T55J5 10", "KK677 20"] `shouldBe` 40
+
+    describe "Part 2" $ do
+        it "acceptance" $ 
+            part2 givenLines `shouldBe` 5905
+
+        it "J is interpreted as 'T'" $ 
+            part2 ["KK677 28", "KTJJT 220"] `shouldBe` 468
+
+        it "J is interpreted as 'T'" $ 
+            part2 ["JKKK2 1", "QQQQ2 2"] `shouldBe` 5

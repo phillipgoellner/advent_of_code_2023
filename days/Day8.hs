@@ -7,7 +7,7 @@ example = ["LLR",
            "ZZZ = (ZZZ, ZZZ)"]
 
 part1 = stepsToZZZ
-part2 = error "Part 2 not implemented yet"
+part2 = stepsToZs
 
 type Node = (String, (String, String))
 
@@ -35,3 +35,21 @@ performOneStep instruction location ((node, next) : nodes)
     | otherwise = getSelector instruction next where
         getSelector 'L' = fst
         getSelector 'R' = snd
+
+-- Part 2
+
+stepsToZs :: [String] -> Int
+stepsToZs lines = foldl1 lcm (map (steps (toNodes lines) (getInstructions lines) 0) (startNodes lines)) where
+    steps nodes [] numberOfSteps location = steps nodes (getInstructions lines) numberOfSteps location
+    steps nodes (instruction : instructions) numberOfSteps location
+        | isEndNode location = numberOfSteps
+        | otherwise = steps nodes instructions (numberOfSteps + 1) (performOneStep instruction location nodes)
+
+startNodes :: [String] -> [[Char]]
+startNodes lines = map fst (filter isStartNode (toNodes lines)) where
+    isStartNode (_ : _ : 'A' : _, _) = True
+    isStartNode _ = False
+
+isEndNode :: String -> Bool
+isEndNode (_ : _ : 'Z' : _) = True
+isEndNode _ = False

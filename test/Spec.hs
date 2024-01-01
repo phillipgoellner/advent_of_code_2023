@@ -11,6 +11,7 @@ import Test.DoctestDay7 (day7Spec)
 import Test.DoctestDay8 (day8Spec)
 import Test.DoctestDay9 (day9Spec)
 import Test.DoctestDay10 (day10Spec)
+import Test.DoctestDay11 (day11Spec)
 
 
 main :: IO ()
@@ -28,3 +29,4 @@ main = do
         day8Spec
         day9Spec
         day10Spec
+        day11Spec

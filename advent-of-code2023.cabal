@@ -37,6 +37,7 @@ library advent-days
                     , Day8
                     , Day9
                     , Day10
+                    , Day11
   build-depends:      base ^>=4.17.2.0
                     , text ^>=2.0.2
                     , leancheck ^>=1.0.0
@@ -67,6 +68,7 @@ test-suite aoc-tests
                     , Test.DoctestDay8
                     , Test.DoctestDay9
                     , Test.DoctestDay10
+                    , Test.DoctestDay11
   build-depends:      advent-days
                     , hspec >= 2.9 && < 2.11
                     , base ^>=4.17.2.0

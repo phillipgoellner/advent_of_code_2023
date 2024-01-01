@@ -12,6 +12,16 @@ import Day7
 import Day8
 import Day9
 import Day10
+import Day11
+
+
+printPuzzleAnswer :: String -> ([String] -> Int) -> IO ()
+printPuzzleAnswer filePath puzzleFunction = do
+    handle <- openFile filePath ReadMode
+    contents <- hGetContents handle
+    print (puzzleFunction (lines contents))
+    hClose handle
+
 
 main :: IO ()
 main = do
@@ -45,11 +55,6 @@ main = do
     print "-----------PART 10-----------"
     printPuzzleAnswer "app/inputDay10.txt"  Day10.part1
     printPuzzleAnswer "app/inputDay10.txt"  Day10.part2
-
-
-printPuzzleAnswer :: String -> ([String] -> Int) -> IO ()
-printPuzzleAnswer filePath puzzleFunction = do
-    handle <- openFile filePath ReadMode
-    contents <- hGetContents handle
-    print (puzzleFunction (lines contents))
-    hClose handle
+    print "-----------PART 11-----------"
+    printPuzzleAnswer "app/inputDay11.txt"  Day11.part1
+    printPuzzleAnswer "app/inputDay11.txt"  (Day11.part2 1000000)
